@@ -12,10 +12,15 @@ import '../assets/styles/iconfont.css'
 import '../assets/styles/fonts/daysOne.css'
 import  Epub from 'epubjs'
 global.ePub = Epub
+
+import {mapGetters} from 'vuex'
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  computed:{
+    ...mapGetters(['test'])
   },
   mounted() {
     /*this.book = new Epub('./GlobalBusinessStrategy.epub');
@@ -25,6 +30,10 @@ export default {
       height:window.innerHeight*0.4
     })
     this.rendition.display()*/
+    this.$store.dispatch('SET_TEST',10).then(()=>{
+      // console.log( this.$store.state.book.test)
+      console.log( this.test)
+    });
   }
 }
 /*document.addEventListener('DOMContentLoaded',()=>{
