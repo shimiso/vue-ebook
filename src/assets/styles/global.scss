@@ -1,7 +1,2 @@
 @import "reset";
-
-$retio: 375 / 10;
-
-@function px2rem($px){
-  @return $px / $retio + rem;
-}
+@import "./mixin";

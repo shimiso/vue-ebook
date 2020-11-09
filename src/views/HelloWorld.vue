@@ -20,20 +20,20 @@ export default {
     msg: String
   },
   computed:{
-    ...mapGetters(['test'])
+    ...mapGetters(['fileName'])
   },
   mounted() {
-    /*this.book = new Epub('./GlobalBusinessStrategy.epub');
+    this.book = new Epub('./GlobalBusinessStrategy.epub');
     console.log(this.book)
     this.rendition =this.book.renderTo('read',{
       width:window.innerWidth*0.4,
       height:window.innerHeight*0.4
     })
-    this.rendition.display()*/
-    this.$store.dispatch('SET_TEST',10).then(()=>{
-      // console.log( this.$store.state.book.test)
+    this.rendition.display()
+    /*this.$store.dispatch('SET_FILENAME',10).then(()=>{
+      // console.log( this.$store.state.book.fileName)
       console.log( this.test)
-    });
+    });*/
   }
 }
 /*document.addEventListener('DOMContentLoaded',()=>{
