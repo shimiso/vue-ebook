@@ -2,17 +2,17 @@
   <transition name="slide-down">
     <div class="title-wrapper">
       <div class="left">
-        <span class="icon iconfont iconback" @click="back"></span>
+        <span class="icon-back" @click="back"></span>
       </div>
       <div class="right">
         <div class="icon-wrapper">
-          <span class="icon iconfont iconshelf"></span>
+          <span class="icon-shelf"></span>
         </div>
         <div class="icon-wrapper">
-          <span class="icon iconfont iconcart"></span>
+          <span class="icon-cart"></span>
         </div>
         <div class="icon-wrapper">
-          <span class="icon iconfont iconmore"></span>
+          <span class="icon-more"></span>
         </div>
       </div>
     </div>
@@ -37,7 +37,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 210;
+    z-index: 1;
     display: flex;
     width: 100%;
     height: px2rem(48);

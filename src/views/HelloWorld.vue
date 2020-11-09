@@ -1,14 +1,13 @@
 <template>
   <div class="hello">
     <div id="read"></div>
-    <span class="icon iconfont iconadd"></span>
-    <span class="icon iconfont iconbookmark"></span>
+    <span class="icon-add"></span>
+    <span class="icon-bookmark"></span>
     <span class="text">ABCDEFG</span>
   </div>
 </template>
 
 <script>
-import '../assets/styles/iconfont.css'
 import '../assets/styles/fonts/daysOne.css'
 import  Epub from 'epubjs'
 global.ePub = Epub

@@ -3,16 +3,16 @@
     <transition name="slide-up">
       <div class="menu-wrapper">
         <div class="icon-wrapper">
-          <span class="icon iconfont iconmenu"></span>
+          <span class="icon-menu"></span>
         </div>
         <div class="icon-wrapper">
-          <span class="icon iconfont iconprogress"></span>
+          <span class="icon-progress"></span>
         </div>
         <div class="icon-wrapper">
-          <span class="icon iconfont iconbright"></span>
+          <span class="icon-bright"></span>
         </div>
         <div class="icon-wrapper">
-          <span class="icon iconfont iconA"></span>
+          <span class="icon-A"></span>
         </div>
       </div>
     </transition>
