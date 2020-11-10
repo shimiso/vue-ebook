@@ -14,5 +14,7 @@ export const FONT_FAMILY = [
   { font: 'Cabin' },
   { font: 'Days One' },
   { font: 'Montserrat' },
-  { font: 'Tangerine' }
+  { font: 'Tangerine' },
+  { font: '宋体' },
+  { font: '微软雅黑' }
 ]

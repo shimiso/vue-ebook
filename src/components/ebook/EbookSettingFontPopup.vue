@@ -1,4 +1,6 @@
 <template>
+  <transition enter-active-class="animate__animated animate__slideInUp animate__faster"
+              leave-active-class="animate__animated animate__slideOutDown animate__faster">
   <div class="ebook-popup-list" v-show="fontFamilyVisible">
     <div class="ebook-popup-title">
       <div class="ebook-popup-title-icon" @click="hide">
@@ -16,6 +18,7 @@
       </div>
     </div>
   </div>
+  </transition>
 </template>
 
 <script>

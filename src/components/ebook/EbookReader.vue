@@ -27,6 +27,7 @@ export default {
     toggleTitleAndMenu(){
       if(this.menuVisible){
         this.setSettingVisible(-1);
+        this.setFontFamilyVisible(false)
       }
       this.setMenuVisible(!this.menuVisible);
     },
@@ -34,6 +35,7 @@ export default {
       // this.$store.dispatch('setMenuVisible',false);
       this.setMenuVisible(false);
       this.setSettingVisible(-1);
+      this.setFontFamilyVisible(false)
     },
     initEpub(){
       const url = '/bookApi/'+this.fileName+'.epub'
