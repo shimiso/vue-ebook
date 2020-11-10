@@ -1,28 +1,38 @@
 <template>
   <div>
-    <transition name="slide-up">
-      <div class="menu-wrapper">
+    <transition enter-active-class="animate__animated animate__slideInUp animate__faster"
+    leave-active-class="animate__animated animate__slideOutDown animate__faster">
+      <div class="menu-wrapper" :class="{'hide-box-shadow': !menuVisible || settingVisible >= 0}" v-show="menuVisible">
         <div class="icon-wrapper">
-          <span class="icon-menu"></span>
+          <span class="icon-menu"  @click="showSetting(3)"></span>
         </div>
         <div class="icon-wrapper">
-          <span class="icon-progress"></span>
+          <span class="icon-progress"  @click="showSetting(2)"></span>
         </div>
         <div class="icon-wrapper">
-          <span class="icon-bright"></span>
+          <span class="icon-bright"  @click="showSetting(1)"></span>
         </div>
         <div class="icon-wrapper">
-          <span class="icon-A"></span>
+          <span class="icon-A"  @click="showSetting(0)"></span>
         </div>
       </div>
     </transition>
+    <ebook-setting-font></ebook-setting-font>
+    <ebook-setting-font-popup></ebook-setting-font-popup>
   </div>
 </template>
 
 <script>
-
+import { ebookMixin } from '../../utils/mixin'
+import EbookSettingFont from "@/components/ebook/EbookSettingFont";
+import EbookSettingFontPopup from "@/components/ebook/EbookSettingFontPopup";
   export default {
+    mixins: [ebookMixin],
+    components: { EbookSettingFont,EbookSettingFontPopup },
     methods: {
+      showSetting(key) {
+        this.setSettingVisible(key)
+      }
     }
   }
 </script>
@@ -37,21 +47,24 @@
     z-index: 200;
     display: flex;
     width: 100%;
-    height: px2rem(48);
+    height: 48px;
     background: white;
-    box-shadow: 0 px2rem(-8) px2rem(8) rgba(0, 0, 0, .15);
-    font-size: px2rem(20);
+    box-shadow: 0 -8px 8px rgba(0, 0, 0, .15);
+    font-size: 20px;
     &.hide-box-shadow {
       box-shadow: none;
     }
     .icon-wrapper {
       flex: 1;
-      @include center;
+      //@include center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       .icon-progress {
-        font-size: px2rem(24);
+        font-size: 24px;
       }
       .icon-bright {
-        font-size: px2rem(22);
+        font-size: 22px;
       }
     }
   }

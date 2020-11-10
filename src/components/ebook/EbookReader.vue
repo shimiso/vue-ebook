@@ -5,34 +5,46 @@
 </template>
 
 <script>
+import { ebookMixin } from '../../utils/mixin'
 import  Epub from 'epubjs'
-import {mapGetters} from 'vuex'
 global.ePub = Epub
 export default {
   name: "EbookReader",
-  computed:{
-    ...mapGetters(['fileName'])
-  },
+  mixins: [ebookMixin],
   methods:{
     prevPage(){
       if(this.rendition){
         this.rendition.prev();
+        this.hideTitleAndMenu();
       }
     },
     nextPage(){
       if(this.rendition){
         this.rendition.next();
+        this.hideTitleAndMenu();
       }
     },
-    toggleTitileAndMenu(){},
+    toggleTitleAndMenu(){
+      if(this.menuVisible){
+        this.setSettingVisible(-1);
+      }
+      this.setMenuVisible(!this.menuVisible);
+    },
+    hideTitleAndMenu(){
+      // this.$store.dispatch('setMenuVisible',false);
+      this.setMenuVisible(false);
+      this.setSettingVisible(-1);
+    },
     initEpub(){
       const url = '/bookApi/'+this.fileName+'.epub'
       console.log(url)
-      this.book = new Epub(url);
+      this.book = new Epub(url)
+      this.setCurrentBook(this.book);
       console.log(this.book)
       this.rendition =this.book.renderTo('read',{
         width:window.innerWidth,
-        height:window.innerHeight
+        height:window.innerHeight,
+        method: 'default'
       })
       this.rendition.display()
       this.rendition.on('touchstart',event=>{
@@ -47,7 +59,7 @@ export default {
         }else if(time<500&&offsetX< -40){
           this.nextPage();
         }else{
-          this.toggleTitileAndMenu();
+          this.toggleTitleAndMenu();
         }
         event.preventDefault();
         event.stopPropagation();
@@ -57,7 +69,7 @@ export default {
   },
   mounted() {
     const fileName = this.$route.params.fileName.split('|').join('/')
-    this.$store.dispatch('setFileName',fileName).then(()=>{
+    this.setFileName(fileName).then(()=>{
       this.initEpub();
     })
   }

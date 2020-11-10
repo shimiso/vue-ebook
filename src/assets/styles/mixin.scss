@@ -1,6 +1,6 @@
 $animationTime: .2s;
 $animationType: linear;
-$ratio: 375 / 30;
+$ratio: 375 / 10;
 
 @function px2rem($px) {
   @return $px / $ratio + rem;
@@ -93,11 +93,11 @@ $ratio: 375 / 30;
 
 .icon {
   color: #666;
-  font-size: px2rem(16);
+  font-size: 16px;
 }
 
 .title {
   color: #666;
-  font-size: px2rem(16);
+  font-size: 16px;
   font-weight: bold;
 }
