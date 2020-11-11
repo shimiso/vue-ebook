@@ -32,6 +32,7 @@
 
 <script>
 import {ebookMixin} from "@/utils/mixin";
+import { saveFontSize } from '../../utils/localStorage'
 import {FONT_SIZE_LIST} from '../../utils/book'
 
 export default {
@@ -49,6 +50,7 @@ export default {
      */
     setFontSize(fontSize){
       this.setDefaultFontSize(fontSize)
+      saveFontSize(this.fileName, fontSize)
       this.currentBook.rendition.themes.fontSize(fontSize)
     },
     /**

@@ -7,6 +7,15 @@
 <script>
 import { ebookMixin } from '../../utils/mixin'
 import  Epub from 'epubjs'
+import {
+  getFontFamily,
+  saveFontFamily,
+  getFontSize,
+  saveFontSize,
+  getTheme,
+  saveTheme,
+  getLocation
+} from '../../utils/localStorage'
 global.ePub = Epub
 export default {
   name: "EbookReader",
@@ -37,6 +46,24 @@ export default {
       this.setSettingVisible(-1);
       this.setFontFamilyVisible(false)
     },
+    initFontSize() {
+      let fontSize = getFontSize(this.fileName)
+      if (!fontSize) {
+        saveFontSize(this.fileName, this.defaultFontSize)
+      } else {
+        this.rendition.themes.fontSize(fontSize)
+        this.setDefaultFontSize(fontSize)
+      }
+    },
+    initFontFamily() {
+      let font = getFontFamily(this.fileName)
+      if (!font) {
+        saveFontFamily(this.fileName, this.defaultFontFamily)
+      } else {
+        this.rendition.themes.font(font)
+        this.setDefaultFontFamily(font)
+      }
+    },
     initEpub(){
       const url = '/bookApi/'+this.fileName+'.epub'
       console.log(url)
@@ -48,7 +75,11 @@ export default {
         height:window.innerHeight,
         method: 'default'
       })
-      this.rendition.display()
+      this.rendition.display().then(()=>{
+        this.initFontSize();
+        this.initFontFamily();
+      })
+
       this.rendition.on('touchstart',event=>{
         this.touchStartX = event.changedTouches[0].clientX
         this.touchStartTime = event.timeStamp
@@ -65,6 +96,16 @@ export default {
         }
         event.preventDefault();
         event.stopPropagation();
+
+        this.rendition.hooks.content.register(contents => {
+          Promise.all([
+            contents.addStylesheet('/bookApi/fonts/daysOne.css'),
+            contents.addStylesheet('/bookApi/fonts/cabin.css'),
+            contents.addStylesheet('/bookApi/fonts/montserrat.css'),
+            contents.addStylesheet('/bookApi/fonts/tangerine.css')
+          ]).then(() => {
+          })
+        })
       })
 
     }
