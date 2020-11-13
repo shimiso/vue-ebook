@@ -67,21 +67,7 @@ export default {
       })
       this.rendition.themes.select(defaultTheme)
     },
-    initFontFamily() {
-      let font = getFontFamily(this.fileName)
-      if (!font) {
-        saveFontFamily(this.fileName, this.defaultFontFamily)
-      } else {
-        this.rendition.themes.font(font)
-        this.setDefaultFontFamily(font)
-      }
-    },
-    initEpub(){
-      const url = '/bookApi/epub/'+this.fileName+'.epub'
-      console.log(url)
-      this.book = new Epub(url)
-      this.setCurrentBook(this.book);
-      console.log(this.book)
+    initRendition() {
       this.rendition =this.book.renderTo('read',{
         width:window.innerWidth,
         height:window.innerHeight,
@@ -93,7 +79,17 @@ export default {
         this.initFontFamily();
         this.initGlobalStyle();
       })
-
+      this.rendition.hooks.content.register(contents => {
+        Promise.all([
+          contents.addStylesheet('/bookApi/fonts/daysOne.css'),
+          contents.addStylesheet('/bookApi/fonts/cabin.css'),
+          contents.addStylesheet('/bookApi/fonts/montserrat.css'),
+          contents.addStylesheet('/bookApi/fonts/tangerine.css')
+        ]).then(() => {
+        })
+      })
+    },
+    initGesture() {
       this.rendition.on('touchstart',event=>{
         this.touchStartX = event.changedTouches[0].clientX
         this.touchStartTime = event.timeStamp
@@ -110,18 +106,30 @@ export default {
         }
         event.preventDefault();
         event.stopPropagation();
-
-        this.rendition.hooks.content.register(contents => {
-          Promise.all([
-            contents.addStylesheet('/bookApi/fonts/daysOne.css'),
-            contents.addStylesheet('/bookApi/fonts/cabin.css'),
-            contents.addStylesheet('/bookApi/fonts/montserrat.css'),
-            contents.addStylesheet('/bookApi/fonts/tangerine.css')
-          ]).then(() => {
-          })
-        })
       })
-
+    },
+    initFontFamily() {
+      let font = getFontFamily(this.fileName)
+      if (!font) {
+        saveFontFamily(this.fileName, this.defaultFontFamily)
+      } else {
+        this.rendition.themes.font(font)
+        this.setDefaultFontFamily(font)
+      }
+    },
+    initEpub(){
+      const url = '/bookApi/epub/'+this.fileName+'.epub'
+      console.log(url)
+      this.book = new Epub(url)
+      this.setCurrentBook(this.book);
+      console.log(this.book)
+      this.initRendition()
+      this.initGesture()
+      this.book.ready.then(() => {
+        return this.book.locations.generate(750 * (window.innerWidth / 375) * (getFontSize(this.fileName) / 16))
+      }).then((locations)=>{
+        this.setBookAvailable(true)
+      })
     }
   },
   mounted() {

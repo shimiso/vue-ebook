@@ -37,13 +37,13 @@
 
   .setting-wrapper {
     position: absolute;
-    bottom: px2rem(48);
+    bottom: 48px;
     left: 0;
     z-index: 160;
     width: 100%;
-    height: px2rem(90);
+    height: 90px;
     background: white;
-    box-shadow: 0 px2rem(-8) px2rem(8) rgba(0, 0, 0, .15);
+    box-shadow: 0 -8px 8px rgba(0, 0, 0, .15);
     .setting-theme {
       height: 100%;
       display: flex;
@@ -51,19 +51,19 @@
         flex: 1;
         display: flex;
         flex-direction: column;
-        padding: px2rem(5);
+        padding: 5px;
         box-sizing: border-box;
         .preview {
           flex: 1;
-          border: px2rem(1) solid #ccc;
+          border: 1px solid #ccc;
           box-sizing: border-box;
           &.selected {
-            box-shadow: 0 px2rem(4) px2rem(6) 0 rgba(0, 0, 0, .1);
+            box-shadow: 0 4px 6px 0 rgba(0, 0, 0, .1);
           }
         }
         .text {
-          flex: 0 0 px2rem(20);
-          font-size: px2rem(14);
+          flex: 0 0 20px;
+          font-size: 14px;
           color: #ccc;
           @include center;
           &.selected {

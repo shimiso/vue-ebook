@@ -66,6 +66,15 @@ export const ebookMixin = {
                     addCss('/bookApi/theme/theme_default.css')
                     break
             }
-        }
+        },
+        display(target, cb) {
+            if (target) {
+                this.currentBook.rendition.display(target).then(() => {
+                })
+            } else {
+                this.currentBook.rendition.display().then(() => {
+                })
+            }
+        },
     }
 }
