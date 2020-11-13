@@ -55,6 +55,18 @@ export default {
         this.setDefaultFontSize(fontSize)
       }
     },
+    initTheme() {
+      let defaultTheme = getTheme(this.fileName)
+      if (!defaultTheme) {
+        defaultTheme = this.themeList[0].name
+        saveTheme(this.fileName, defaultTheme)
+      }
+      this.setDefaultTheme(defaultTheme)
+      this.themeList.forEach(theme => {
+        this.rendition.themes.register(theme.name, theme.style)
+      })
+      this.rendition.themes.select(defaultTheme)
+    },
     initFontFamily() {
       let font = getFontFamily(this.fileName)
       if (!font) {
@@ -65,7 +77,7 @@ export default {
       }
     },
     initEpub(){
-      const url = '/bookApi/'+this.fileName+'.epub'
+      const url = '/bookApi/epub/'+this.fileName+'.epub'
       console.log(url)
       this.book = new Epub(url)
       this.setCurrentBook(this.book);
@@ -76,8 +88,10 @@ export default {
         method: 'default'
       })
       this.rendition.display().then(()=>{
+        this.initTheme()
         this.initFontSize();
         this.initFontFamily();
+        this.initGlobalStyle();
       })
 
       this.rendition.on('touchstart',event=>{

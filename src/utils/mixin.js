@@ -1,5 +1,5 @@
 import { mapGetters, mapActions } from 'vuex'
-
+import { themeList,addCss,removeAllCss} from './book'
 export const ebookMixin = {
     computed: {
         ...mapGetters([
@@ -21,7 +21,10 @@ export const ebookMixin = {
             'paginate',
             'pagelist',
             'offsetY',
-            'isBookmark'])
+            'isBookmark']),
+        themeList() {
+            return themeList(this)
+        },
     },
     methods:{
         ...mapActions([
@@ -43,6 +46,26 @@ export const ebookMixin = {
             'setPaginate',
             'setPagelist',
             'setOffsetY',
-            'setIsBookmark'])
+            'setIsBookmark']),
+        initGlobalStyle() {
+            removeAllCss()
+            switch (this.defaultTheme) {
+                case 'Default':
+                    addCss('/bookApi/theme/theme_default.css')
+                    break
+                case 'Eye':
+                    addCss('/bookApi/theme/theme_eye.css')
+                    break
+                case 'Gold':
+                    addCss('/bookApi/theme/theme_gold.css')
+                    break
+                case 'Night':
+                    addCss('/bookApi/theme/theme_night.css')
+                    break
+                default:
+                    addCss('/bookApi/theme/theme_default.css')
+                    break
+            }
+        }
     }
 }

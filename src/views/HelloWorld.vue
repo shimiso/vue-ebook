@@ -22,7 +22,7 @@ export default {
     ...mapGetters(['fileName'])
   },
   mounted() {
-    this.book = new Epub('./GlobalBusinessStrategy.epub');
+    this.book = new Epub('../GlobalBusinessStrategy.epub');
     console.log(this.book)
     this.rendition =this.book.renderTo('read',{
       width:window.innerWidth*0.4,
