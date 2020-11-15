@@ -30,7 +30,10 @@ export const ebookMixin = {
             if(this.section){
                 const  sectionInfo = this.currentBook.section(this.section);
                 if(sectionInfo && sectionInfo.href){
-                    return this.currentBook.navigation.get(sectionInfo.href).label
+                    const navigation = this.currentBook.navigation.get(sectionInfo.href);
+                    if(navigation && navigation.label) {
+                        return navigation.label;
+                    }
 
                 }
             }
