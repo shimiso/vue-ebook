@@ -23,13 +23,17 @@ export default {
   methods:{
     prevPage(){
       if(this.rendition){
-        this.rendition.prev();
+        this.rendition.prev().then(()=>{
+          this.refreshLocation();
+        });
         this.hideTitleAndMenu();
       }
     },
     nextPage(){
       if(this.rendition){
-        this.rendition.next();
+        this.rendition.next().then(()=>{
+          this.refreshLocation();
+        });
         this.hideTitleAndMenu();
       }
     },
@@ -73,11 +77,12 @@ export default {
         height:window.innerHeight,
         method: 'default'
       })
-      this.rendition.display().then(()=>{
+      const location = getLocation(this.fileName)
+      this.display(location, () => {
         this.initTheme()
-        this.initFontSize();
-        this.initFontFamily();
-        this.initGlobalStyle();
+        this.initFontSize()
+        this.initFontFamily()
+        this.initGlobalStyle()
       })
       this.rendition.hooks.content.register(contents => {
         Promise.all([
@@ -129,6 +134,7 @@ export default {
         return this.book.locations.generate(750 * (window.innerWidth / 375) * (getFontSize(this.fileName) / 16))
       }).then((locations)=>{
         this.setBookAvailable(true)
+        this.refreshLocation();
       })
     }
   },

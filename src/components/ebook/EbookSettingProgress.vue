@@ -4,7 +4,7 @@
     <div class="setting-wrapper" v-show="menuVisible && settingVisible === 2">
       <div class="setting-progress">
         <div class="read-time-wrapper">
-          <span class="read-time-text">阅读时间</span>
+          <span class="read-time-text">{{getReadTimeText()}}</span>
           <span class="icon-forward"></span>
         </div>
         <div class="progress-wrapper">
@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="text-wrapper">
-          <span class="progress-section-text">章节名字</span>
+          <span class="progress-section-text">{{getSectionName}}</span>
           <span>({{bookAvailable ? progress + '%' : '加载中...'}})</span>
         </div>
       </div>
@@ -35,7 +35,7 @@
 
 <script>
   import { ebookMixin } from '../../utils/mixin'
-
+  import { getReadTime } from '../../utils/localStorage'
   export default {
     mixins: [ebookMixin],
     methods: {
@@ -60,21 +60,32 @@
       prevSection() {
         if (this.section > 0 && this.bookAvailable) {
           this.setSection(this.section - 1).then(() => {
-            this.displaySection()
+            this.displaySection();
           })
         }
       },
       nextSection() {
         if (this.section < this.currentBook.spine.length - 1 && this.bookAvailable) {
           this.setSection(this.section + 1).then(() => {
-            this.displaySection()
+            this.displaySection();
           })
         }
       },
-      displaySection() {
-        const sectionInfo = this.currentBook.section(this.section)
-        if (sectionInfo && sectionInfo.href) {
+      displaySection(){
+        const  sectionInfo = this.currentBook.section(this.section)
+        if(sectionInfo && sectionInfo.href){
           this.display(sectionInfo.href)
+        }
+      },
+      getReadTimeText() {
+        return this.$t('book.haveRead').replace('$1', this.getReadTimeByMinute(this.fileName))
+      },
+      getReadTimeByMinute(fileName) {
+        const readTime = getReadTime(fileName)
+        if (!readTime) {
+          return 0
+        } else {
+          return Math.ceil(readTime / 60)
         }
       }
     },
