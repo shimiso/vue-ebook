@@ -1,34 +1,84 @@
 <template>
   <div class="ebook-slide-contents">
-    <div class="slide-content-search-input-wrapper">
-      <div class="slide-contents-search-icon">
-        <span class="icon-search"></span>
+    <div class="slide-contents-search-wrapper">
+      <div class="slide-contents-search-input-wrapper">
+        <div class="slide-contents-search-icon">
+          <span class="icon-search"></span>
+        </div>
+        <input class="slide-contents-search-input" type="text"
+               :placeholder="$t('book.searchHint')"
+               @click="showSearchPage()"/>
       </div>
-      <input class="slide-contents-search-input" type="text" :placeholder="$t('book.searchHint')"/>
+      <div class="slide-contents-search-cancel" v-if="searchVisible" @click="hideSearchPage()">取消</div>
     </div>
-    <div class="slide-contents-search-cancel">取消</div>
+
+
+
   </div>
 </template>
 
 <script>
+import {ebookMixin} from '../../utils/mixin'
+
 export default {
-name: "EbookSlideContents"
+  name: "EbookSlideContents",
+  mixins:[ebookMixin],
+  data(){
+    return{
+      searchVisible:false
+    }
+  },
+  methods:{
+    showSearchPage(){
+      this.searchVisible = true
+    },
+    hideSearchPage(){
+      this.searchVisible = false
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
   @import "../../assets/styles/global";
   .ebook-slide-contents{
-    .slide-content-search-input-wrapper{
-      .slide-contents-search-icon{
+    width: 100%;
+    .slide-contents-search-wrapper {
+      display: flex;
+      width: 100%;
+      height: 36px;
+      margin: 20px 0 10px 0;
+      padding: 0 15px;
+      box-sizing: border-box;
+      .slide-contents-search-input-wrapper {
+        flex: 1;
+        @include center
+        .slide-contents-search-icon {
+          flex: 0 0 28px;
+          font-size: 12px;
+          @include center;
+        }
+        .slide-contents-search-input {
+          flex: 1;
+          width: 100%;
+          height: 32px;
+          font-size: 14px;
+          background: transparent;
+          border:none;
+          &:focus{
+            outline: none;
 
+          }
+        }
       }
-      .slide-contents-search-input{
 
+      .slide-contents-search-cancel {
+        flex: 0 0 50px;
+        font-size: 14px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
       }
-    }
-    .slide-contents-search-cancel{
-
     }
   }
 </style>
