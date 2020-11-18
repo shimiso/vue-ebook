@@ -6,6 +6,7 @@
         <div class="content" v-if="settingVisible === 3">
           <div class="content-page-wrapper">
             <div class="content-page">
+              <component :is="currentTab===1 ? content : bookmark "></component>
             </div>
             <div class="content-page-tab">
               <div class="content-page-tab-item"
@@ -28,14 +29,18 @@
 
 <script>
   import { ebookMixin } from '../../utils/mixin'
-
+  import EbookSlideContents from "@/components/ebook/EbookSlideContents";
+  import EbookSlideBookmark from "@/components/ebook/EbookSlideBookmark";
   export default {
     mixins: [ebookMixin],
     components: {
+
     },
     data() {
       return {
         currentTab: 1,
+        content:EbookSlideContents,
+        bookmark:EbookSlideBookmark
       }
     },
     methods: {
