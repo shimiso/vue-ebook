@@ -6,6 +6,7 @@
 
 <script>
 import { ebookMixin } from '../../utils/mixin'
+import { flatten } from '../../utils/book'
 import  Epub from 'epubjs'
 import {
   getFontFamily,
@@ -130,11 +131,36 @@ export default {
       console.log(this.book)
       this.initRendition()
       this.initGesture()
+      this.parseBook();
       this.book.ready.then(() => {
         return this.book.locations.generate(750 * (window.innerWidth / 375) * (getFontSize(this.fileName) / 16))
       }).then((locations)=>{
         this.setBookAvailable(true)
         this.refreshLocation();
+      })
+    },
+    parseBook(url, options) {
+      this.book.loaded.cover.then(cover => {
+        this.book.archive.createUrl(cover, options).then(url => {
+          this.setCover(url)
+        })
+      })
+
+      this.book.loaded.metadata.then(metadata => {
+        this.setMetadata(metadata)
+      })
+
+      this.book.loaded.navigation.then(nav => {
+        const navItem = flatten(nav.toc)
+
+        function find(item, level = 0) {
+          return !item.parent ? level : find(navItem.filter(parentItem => parentItem.id === item.parent)[0], ++level)
+        }
+
+        navItem.forEach(item => {
+          item.level = find(item)
+        })
+        this.setNavigation(navItem)
       })
     }
   },

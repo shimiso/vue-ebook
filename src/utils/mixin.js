@@ -1,6 +1,6 @@
 import { mapGetters, mapActions } from 'vuex'
 import { themeList,addCss,removeAllCss} from './book'
-import { getBookmark, saveLocation, getBookShelf, saveBookShelf } from './localStorage'
+import {getBookmark, saveLocation, getBookShelf, saveBookShelf, getReadTime} from './localStorage'
 export const ebookMixin = {
     computed: {
         ...mapGetters([
@@ -108,5 +108,16 @@ export const ebookMixin = {
             this.setSettingVisible(-1)
             this.setFontFamilyVisible(false)
         },
+        getReadTimeText() {
+            return this.$t('book.haveRead').replace('$1', this.getReadTimeByMinute(this.fileName))
+        },
+        getReadTimeByMinute(fileName) {
+            const readTime = getReadTime(fileName)
+            if (!readTime) {
+                return 0
+            } else {
+                return Math.ceil(readTime / 60)
+            }
+        }
     }
 }

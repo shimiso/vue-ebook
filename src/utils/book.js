@@ -91,3 +91,7 @@ export function addCss(href) {
   link.setAttribute('href', href)
   document.getElementsByTagName('head')[0].appendChild(link)
 }
+
+export function flatten(array) {
+  return [].concat(...array.map(item => [].concat(item, ...flatten(item.subitems))))
+}
