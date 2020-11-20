@@ -1,10 +1,12 @@
 <template>
-  <div class="ebook">
+  <div class="ebook" ref="ebook">
     <!-- 阅读器标题组件 -->
     <ebook-title></ebook-title>
     <ebook-reader></ebook-reader>
     <!-- 阅读器菜单组件 -->
     <ebook-menu></ebook-menu>
+    <!--书签-->
+    <ebook-bookmark></ebook-bookmark>
   </div>
 </template>
 
@@ -12,17 +14,47 @@
 import EbookReader from "@/components/ebook/EbookReader";
 import EbookTitle from "@/components/ebook/EbookTitle";
 import EbookMenu from "@/components/ebook/EbookMenu";
+import EbookBookmark from "@/components/ebook/EbookBookmark";
 import { getReadTime, saveReadTime } from '../../utils/localStorage';
 import { ebookMixin } from '../../utils/mixin'
 export default {
   name: "index",
   mixins: [ebookMixin],
-  components: {EbookReader,EbookTitle,EbookMenu},
+  components: {EbookReader,EbookTitle,EbookMenu,EbookBookmark},
+  watch:{
+    // 监听用户下拉屏幕时滚动条的y轴数值
+    offsetY(v) {
+      // 判断如果菜单栏没有处于显示状态（如果菜单栏显示，优先响应菜单栏事件）
+      // 并且电子书已经解析完毕（未解析完毕时无法获取currentLocation）
+      if (!this.menuVisible && this.bookAvailable) {
+        if (v > 0) {
+          // 向下拉动屏幕时，调用move方法
+          this.move(v)
+        } else if (v === 0) {
+          // y轴为0时，调用restore方法让屏幕回弹，松手时屏幕是无法自动回弹的，必须自己实现
+          this.restore()
+        }
+      }
+    }
+  },
   mounted() {
     // 开启记录阅读时间的定时任务
     this.startLoopReadTime()
   },
   methods:{
+    restore() {
+      // 将组件还原回原位
+      this.$refs.ebook.style.top = 0
+      // 设置过渡动画，产生回弹效果
+      this.$refs.ebook.style.transition = 'all .2s linear'
+      setTimeout(() => {
+        // 200毫秒动画结束后，将过渡动画关闭，否则在下拉时也会产生过渡动画
+        this.$refs.ebook.style.transition = ''
+      }, 200)
+    },
+    move(v){
+      this.$refs.ebook.style.top = v + 'px'
+    },
     startLoopReadTime() {
       // 获取阅读时间
       let readTime = getReadTime(this.fileName)

@@ -27,7 +27,7 @@ export const ebookMixin = {
             return themeList(this)
         },
         getSectionName() {
-            if(this.section){
+            /*if(this.section){
                 const  sectionInfo = this.currentBook.section(this.section);
                 if(sectionInfo && sectionInfo.href){
                     const navigation = this.currentBook.navigation.get(sectionInfo.href);
@@ -36,7 +36,8 @@ export const ebookMixin = {
                     }
 
                 }
-            }
+            }*/
+            return this.section?this.navigation[this.section].label:'';
         }
     },
     methods:{
