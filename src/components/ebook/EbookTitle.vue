@@ -39,7 +39,7 @@ import {ebookMixin} from "@/utils/mixin";
     top: 0;
     left: 0;
     display: flex;
-    z-index: 1;//属性设置元素的堆叠顺序。拥有更高堆叠顺序的元素总是会处于堆叠顺序较低的元素的前面
+    z-index: 200;//属性设置元素的堆叠顺序。拥有更高堆叠顺序的元素总是会处于堆叠顺序较低的元素的前面
     width: 100%;
     height: 48px;
     background: white;

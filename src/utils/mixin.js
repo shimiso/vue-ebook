@@ -81,6 +81,11 @@ export const ebookMixin = {
                     break
             }
         },
+
+        /**
+         * 1.保存当前阅读位置
+         * 2.判断当前页是否为书签页面
+         */
         refreshLocation(){
             const currentLocation = this.currentBook.rendition.currentLocation()
             if(currentLocation && currentLocation.start){
@@ -89,6 +94,28 @@ export const ebookMixin = {
                 this.setProgress(Math.floor(progress * 100))
                 this.setSection(currentLocation.start.index)
                 saveLocation(this.fileName, startCfi)
+
+                const bookmark = getBookmark(this.fileName)
+                if (bookmark) {
+                    if (bookmark.some(item => item.cfi === startCfi)) {
+                        this.setIsBookmark(true)
+                    } else {
+                        this.setIsBookmark(false)
+                    }
+                } else {
+                    this.setIsBookmark(false)
+                }
+                if (this.pagelist) {
+                    const totalPage = this.pagelist.length
+                    const currentPage = currentLocation.start.location
+                    if (currentPage && currentPage > 0) {
+                        this.setPaginate(currentPage + ' / ' + totalPage)
+                    } else {
+                        this.setPaginate('')
+                    }
+                } else {
+                    this.setPaginate('')
+                }
             }
         },
         display(target, cb) {

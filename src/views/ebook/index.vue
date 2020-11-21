@@ -1,12 +1,17 @@
 <template>
   <div class="ebook" ref="ebook">
+    <!-- 电子书页眉组件 -->
+    <ebook-header></ebook-header>
     <!-- 阅读器标题组件 -->
     <ebook-title></ebook-title>
+    <!-- 阅读器组件 -->
     <ebook-reader></ebook-reader>
     <!-- 阅读器菜单组件 -->
     <ebook-menu></ebook-menu>
-    <!--书签-->
+    <!-- 阅读器书签组件 -->
     <ebook-bookmark></ebook-bookmark>
+    <!-- 电子书页脚组件 -->
+    <ebook-footer></ebook-footer>
   </div>
 </template>
 
@@ -15,12 +20,14 @@ import EbookReader from "@/components/ebook/EbookReader";
 import EbookTitle from "@/components/ebook/EbookTitle";
 import EbookMenu from "@/components/ebook/EbookMenu";
 import EbookBookmark from "@/components/ebook/EbookBookmark";
+import EbookHeader from '../../components/ebook/EbookHeader'
+import EbookFooter from '../../components/ebook/EbookFooter'
 import { getReadTime, saveReadTime } from '../../utils/localStorage';
 import { ebookMixin } from '../../utils/mixin'
 export default {
   name: "index",
   mixins: [ebookMixin],
-  components: {EbookReader,EbookTitle,EbookMenu,EbookBookmark},
+  components: {EbookReader,EbookTitle,EbookMenu,EbookBookmark,EbookHeader,EbookFooter},
   watch:{
     // 监听用户下拉屏幕时滚动条的y轴数值
     offsetY(v) {
@@ -36,10 +43,6 @@ export default {
         }
       }
     }
-  },
-  mounted() {
-    // 开启记录阅读时间的定时任务
-    this.startLoopReadTime()
   },
   methods:{
     restore() {
@@ -70,7 +73,17 @@ export default {
         }
       }, 1000)
     }
-  }
+  },
+  mounted() {
+    // 开启记录阅读时间的定时任务
+    this.startLoopReadTime()
+  },
+  beforeDestroy() {
+    if (this.task) {
+      // 关闭定时任务
+      clearInterval(this.task)
+    }
+  },
 }
 </script>
 

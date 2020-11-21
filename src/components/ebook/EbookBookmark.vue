@@ -94,6 +94,7 @@ const WHITE = '#fff'
         const cfi = currentLocation.start.cfi
         this.bookmark = getBookmark(this.fileName)
         if (this.bookmark) {
+          //过滤掉当前书签后重新保存就是删除
           saveBookmark(this.fileName, this.bookmark.filter(item => item.cfi !== cfi))
           this.setIsBookmark(false)
         }
