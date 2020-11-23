@@ -185,17 +185,22 @@ export default {
         padding: 0 10px;
         box-sizing: border-box;
         .slide-contents-book-title {
-          width:153.75px;
           font-size: 14px;
           line-height: 16px;
-          @include ellipsis2(3)
+          @include left;
+          .slide-contents-book-title-text{
+            @include ellipsis2(3)
+          }
         }
 
         .slide-contents-book-author {
-          width:153.75px;
           font-size: 12px;
+          line-height: 14px;
           margin-top: 5px;
-          @include ellipsis2(1)
+          @include left;
+          .slide-contents-book-author-text{
+            @include ellipsis2(1)
+          }
         }
       }
 

@@ -5,6 +5,7 @@ import router from './router'
 import i18n from './lang'
 import 'lib-flexible'
 import './assets/styles/icon.css'
+import './assets/styles/global.scss'
 import animated from 'animate.css'
 Vue.use(animated)
 Vue.config.productionTip = false
