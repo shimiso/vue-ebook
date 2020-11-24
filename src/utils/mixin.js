@@ -1,6 +1,26 @@
 import { mapGetters, mapActions } from 'vuex'
 import { themeList,addCss,removeAllCss} from './book'
 import {getBookmark, saveLocation, getBookShelf, saveBookShelf, getReadTime} from './localStorage'
+
+//书城home页面mixin
+export const storeHomeMixin = {
+    computed: {
+        ...mapGetters([
+            'offsetY',
+            'hotSearchOffsetY',
+            'flapCardVisible'
+        ])
+    },
+    methods: {
+        ...mapActions([
+            'setOffsetY',
+            'setHotSearchOffsetY',
+            'setFlapCardVisible'
+        ])
+    }
+}
+
+//阅读器mixin
 export const ebookMixin = {
     computed: {
         ...mapGetters([
