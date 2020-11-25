@@ -7,7 +7,7 @@
           <div class="title-text-wrapper">
             <span class="title-text title">{{$t('home.title')}}</span>
           </div>
-          <div class="title-icon-shake-wrapper">
+          <div class="title-icon-shake-wrapper" @click="showFlapCard">
             <span class="icon-shake icon"></span>
           </div>
         </div>
@@ -27,7 +27,7 @@
         </div>
       </div>
     </div>
-    <hot-search-list v-show="hotSearchVisible"></hot-search-list>
+    <hot-search-list v-show="hotSearchVisible" ref="hotSearch"></hot-search-list>
   </div>
 </template>
 
@@ -63,6 +63,10 @@ import HotSearchList from "@/components/home/HotSearchList";
       }
     },
     methods: {
+      showFlapCard(){
+        this.setFlapCardVisible(true)
+      },
+      //返回  1.如果外部向上偏移量>0 则显示阴影 否则隐藏阴影 2.隐藏热门搜索
       back(){
         if(this.offsetY>0){
           this.showShadow()
@@ -70,14 +74,28 @@ import HotSearchList from "@/components/home/HotSearchList";
           this.hideShadow()
         }
         this.hideHotSearch()
-        this.showTitle()
       },
+      //显示热门搜索 1.隐藏title 2.显示搜索 3.dom更新之后重置热门搜索
       showHotSearch() {
         this.hideTitle()
         this.hotSearchVisible = true
+
+        //在整个dom更新完之后 在修改数据之后立即使用它，然后等待 DOM 更新
+        this.$nextTick(()=>{
+          this.$refs.hotSearch.reset();
+        })
+
       },
+      //隐藏热门搜索 1.隐藏搜索 2.如果搜索向上偏移>0 则隐藏标题显示搜索框阴影 否则显示标题隐藏搜索框阴影
       hideHotSearch() {
         this.hotSearchVisible = false
+        if(this.offsetY>0){
+          this.hideTitle()
+          this.showShadow()
+        }else {
+          this.showTitle()
+          this.hideShadow()
+        }
       },
       hideTitle() {
         this.titleVisible = false
