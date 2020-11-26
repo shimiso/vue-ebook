@@ -7,6 +7,8 @@ import 'lib-flexible'
 import './assets/styles/icon.css'
 import './assets/styles/global.scss'
 import animated from 'animate.css'
+// import './mock'
+
 Vue.use(animated)
 Vue.config.productionTip = false
 

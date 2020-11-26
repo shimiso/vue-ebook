@@ -267,7 +267,7 @@ export default {
     }
   },
   mounted() {
-    const fileName = 'LifeSciences/2016_Book_TechnologicalAndInstitutionalI';//this.$route.params.fileName.split('|').join('/')
+    const fileName = this.$route.params.fileName.split('|').join('/')
     this.setFileName(fileName).then(()=>{
       this.initEpub();
     })

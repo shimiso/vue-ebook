@@ -17,6 +17,14 @@ module.exports = {
                     '^/bookApi': '/'  // rewrite path
                 }
             },
+            '/appBaseUrl': {
+                target: 'http://47.99.166.157:3000',  // target host
+                ws: true,  // proxy websockets
+                changeOrigin: true,  // needed for virtual hosted sites
+                pathRewrite: {
+                    '^/appBaseUrl': '/'  // rewrite path
+                }
+            },
         }
     },
 
