@@ -1,3 +1,14 @@
+function mock(app, url, data) {
+    app.get(url, (request, response) => {
+        response.json(data)
+    })
+}
+
+const homeData = require('./src/mock/bookHome')
+const shelfData = require('./src/mock/bookShelf')
+const listData = require('./src/mock/bookList')
+const flatListData = require('./src/mock/bookFlatList')
+
 module.exports = {
     publicPath:process.env.NODE_ENV === 'production'?'./':'/',
     // 运行 vue-cli-service build 时生成的生产环境构建文件的目录
@@ -25,6 +36,20 @@ module.exports = {
                     '^/appBaseUrl': '/'  // rewrite path
                 }
             },
+            '/appEpubOpfUrl': {
+                target: 'http://47.99.166.157/epub2',  // target host
+                ws: true,  // proxy websockets
+                changeOrigin: true,  // needed for virtual hosted sites
+                pathRewrite: {
+                    '^/appEpubOpfUrl': '/'  // rewrite path
+                }
+            },
+        },
+        before(app) {
+            mock(app, '/book/home', homeData)
+            mock(app, '/book/shelf', shelfData)
+            mock(app, '/book/list', listData)
+            mock(app, '/book/flat-list', flatListData)
         }
     },
 

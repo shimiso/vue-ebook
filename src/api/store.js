@@ -4,21 +4,21 @@ import { setLocalForage } from '../utils/localForage'
 export function flatList() {
   return axios({
     method: 'get',
-    url: `/appBaseUrl/book/flat-list`
+    url: `/book/flat-list`
   })
 }
 
 export function shelf() {
   return axios({
     method: 'get',
-    url: `/appBaseUrl/book/shelf`
+    url: `/book/shelf`
   })
 }
 
 export function home() {
   return axios({
     method: 'get',
-    url: `/appBaseUrl/book/home`
+    url: `/book/home`
   })
 }
 
@@ -35,7 +35,7 @@ export function detail(book) {
 export function list() {
   return axios({
     method: 'get',
-    url: `/appBaseUrl/book/list`
+    url: `/book/list`
   })
 }
 
@@ -45,7 +45,7 @@ export function download(book, onSucess, onError, onProgress) {
     onError = null
   }
   return axios.create({
-    baseURL: '/appBaseUrl',
+    baseURL: 'http://47.99.166.157/epub',
     method: 'get',
     responseType: 'blob',
     timeout: 180 * 1000,

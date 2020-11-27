@@ -22,8 +22,10 @@
           <span class="icon-search icon"></span>
           <input class="input"
                  type="text"
+                 v-model="searchText"
                  :placeholder="$t('home.hint')"
-                 @click="showHotSearch"/>
+                 @click="showHotSearch"
+                 @keyup.13.exact="search"/><!--只能按下回车键盘搜索-->
         </div>
       </div>
     </div>
@@ -39,6 +41,7 @@ import HotSearchList from "@/components/home/HotSearchList";
     mixins: [storeHomeMixin],
     data() {
       return {
+        searchText: '',
         titleVisible:true,
         shadowVisible:false,
         hotSearchVisible:false
@@ -63,6 +66,14 @@ import HotSearchList from "@/components/home/HotSearchList";
       }
     },
     methods: {
+      search() {
+        this.$router.push({
+          path: '/store/list',
+          query: {
+            keyword: this.searchText
+          }
+        })
+      },
       showFlapCard(){
         this.setFlapCardVisible(true)
       },
