@@ -34,8 +34,11 @@ const book = {
     isBookmark: state => state.book.isBookmark,
     hotSearchOffsetY: state => state.store.hotSearchOffsetY,
     flapCardVisible: state => state.store.flapCardVisible,
+    //是否进入编辑模式
     isEditMode: state => state.store.isEditMode,
+    //书架图书列表
     shelfList: state => state.store.shelfList,
+    //书架图书选中的列表
     shelfSelected: state => state.store.shelfSelected,
     shelfTitleVisible: state => state.store.shelfTitleVisible,
     shelfCategory: state => state.store.shelfCategory,
