@@ -1,6 +1,6 @@
 <template>
-  <div class="shelf-search-wrapper">
-    <div class="shelf-search">
+  <div class="shelf-search-wrapper" :class="{'search-top': ifInputClicked, 'hide-shadow': ifHideShadow}">
+    <div class="shelf-search" :class="{'search-top': ifInputClicked}">
       <div class="search-wrapper">
         <div class="icon-search-wrapper">
           <span class="icon-search icon"></span>
@@ -28,12 +28,16 @@
 
 <script>
 import { setLocalStorage } from '../../utils/localStorage'
+import { storeShelfMixin } from '../../utils/mixin'
+
 export default {
-name: "ShelfSearch",
+  mixins: [storeShelfMixin],
+  name: "ShelfSearch",
   data(){
     return{
-      searchText:'qq',
-      ifInputClicked:false
+      searchText:'',
+      ifInputClicked:false,
+      ifHideShadow:false
     }
   },
   computed:{
@@ -44,6 +48,7 @@ name: "ShelfSearch",
   methods:{
     onSearchClick(){
       this.ifInputClicked = true
+      this.setShelfTitleVisible(false)
     },
     clearSearchText(){
       this.searchText = ''
@@ -58,6 +63,7 @@ name: "ShelfSearch",
     },
     onCancelClick(){
       this.ifInputClicked = false
+      this.setShelfTitleVisible(true)
     }
   }
 }
@@ -79,6 +85,10 @@ name: "ShelfSearch",
     display: flex;
     width: 100%;
     height: 52px;
+    transition: top $animationTime linear;
+    &.search-top {
+      top: 0;
+    }
     .search-wrapper{
       display: flex;
       flex: 1;
