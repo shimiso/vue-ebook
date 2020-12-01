@@ -1,7 +1,7 @@
 <template>
   <transition enter-active-class="animate__animated animate__slideInDown animate__faster"
               leave-active-class="animate__animated animate__slideOutUp animate__faster">
-  <div class="shelf-title" v-show="shelfTitleVisible">
+  <div class="shelf-title" :class="{'hide-shadow':ifHideShadow}" v-show="shelfTitleVisible">
     <div class="shelf-title-text-wrapper">
       <span class="shelf-title-text">{{$t('shelf.title')}}</span>
       <span class="shelf-title-sub-text" v-show="isEditMode">{{selectedText}}</span>
@@ -23,10 +23,20 @@ import {storeShelfMixin} from "@/utils/mixin";
 export default {
 name: "ShelfTitle",
   mixins:[storeShelfMixin],
+  watch:{
+    offsetY(offsetY){
+      if(offsetY>0){
+        this.ifHideShadow = false
+      }else{
+        this.ifHideShadow = true
+      }
+    }
+  },
   data(){
     return{
       showClear:true,
-      showEdit:true
+      showEdit:true,
+      ifHideShadow:true
     }
   },
   computed:{
@@ -54,6 +64,10 @@ name: "ShelfTitle",
   height: 42px;
   background: white;
   z-index: 103;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.1);
+  &.hide-shadow{
+    box-shadow: none;
+  }
   .shelf-title-text-wrapper{
     position: absolute;
     top: 0;

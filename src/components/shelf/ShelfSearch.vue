@@ -23,6 +23,14 @@
         <span class="cancel-text">{{$t('shelf.cancel')}}</span>
       </div>
     </div>
+    <transition enter-active-class="animate__animated animate__slideInUp animate__faster"
+                leave-active-class="animate__animated animate__slideOutDown animate__faster">
+    <div class="shelf-search-tab-wrapper" v-if="ifInputClicked">
+      <div class="shelf-search-tab-item" v-for="item in tabs" :key="item.id" @click="onTabClick(item.id)">
+        <span class="shelf-search-tab-text" :class="{'is-selected':item.id===selectedTab}">{{item.text}}</span>
+      </div>
+    </div>
+    </transition>
   </div>
 </template>
 
@@ -37,15 +45,40 @@ export default {
     return{
       searchText:'',
       ifInputClicked:false,
-      ifHideShadow:false
+      ifHideShadow:true,
+      selectedTab:1,
+    }
+  },
+  watch: {
+    offsetY(offsetY) {
+      if (offsetY > 0&&this.ifInputClicked) {
+        this.ifHideShadow = false //显示阴影
+      } else {
+        this.ifHideShadow = true
+      }
     }
   },
   computed:{
     lang(){
       return this.$i18n.locale
+    },
+    tabs(){
+      return[{
+        id:1,
+        text:this.$t('shelf.default')
+      },{
+        id:2,
+        text:this.$t('shelf.progress')
+      },{
+        id:3,
+        text:this.$t('shelf.purchase')
+      }]
     }
   },
   methods:{
+    onTabClick(id){
+      this.selectedTab = id
+    },
     onSearchClick(){
       this.ifInputClicked = true
       this.setShelfTitleVisible(false)
@@ -78,6 +111,15 @@ export default {
   height: 94px;
   font-size: 16px;
   background: white;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.1);
+  &.hide-shadow{
+    box-shadow: none;
+  }
+  &.search-top{
+    position: fixed;
+    left: 0;
+    top: 0;
+  }
   .shelf-search{
     position: absolute;
     top: 42px;
@@ -145,6 +187,26 @@ export default {
       .cancel-text{
         font-size: 14px;
         color: $color-blue;
+      }
+    }
+  }
+  .shelf-search-tab-wrapper{
+    position: absolute;
+    top: 52px;
+    left: 0;
+    z-index: 105;
+    display: flex;
+    width: 100%;
+    height: 42px;
+    .shelf-search-tab-item{
+      flex: 1;
+      @include center
+      .shelf-search-tab-text{
+        font-size: 12px;
+        color: #999;
+        &.is-selected{
+          color: $color-blue;
+        }
       }
     }
   }
