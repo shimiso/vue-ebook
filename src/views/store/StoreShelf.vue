@@ -1,10 +1,11 @@
 <template>
   <div class="store-shelf">
-    <shelf-title></shelf-title>
-    <scroll class="store-shelf-scroll-wrapper" :top="0"  @onScroll="onScroll">
+      <shelf-title></shelf-title>
+      <scroll class="store-shelf-scroll-wrapper" :top="0"  @onScroll="onScroll" :bottom="scrollBottom" ref="scroll">
       <shelf-search></shelf-search>
       <shelf-list></shelf-list>
     </scroll>
+    <shelf-footer></shelf-footer>
   </div>
 </template>
 
@@ -15,11 +16,27 @@ import ShelfSearch from "@/components/shelf/ShelfSearch";
 import {shelf} from "@/api/store";
 import { storeShelfMixin } from '../../utils/mixin'
 import ShelfList from "@/components/shelf/ShelfList";
+import {appendAddToShelf} from "@/utils/store";
+import ShelfFooter from "@/components/shelf/ShelfFooter";
 
 export default {
   name: "StoreShelf",
   mixins: [storeShelfMixin],
-  components:{ShelfList, ShelfSearch, Scroll, ShelfTitle},
+  components:{ShelfFooter, ShelfList, ShelfSearch, Scroll, ShelfTitle},
+  data(){
+    return{
+      scrollBottom:0
+    }
+  },
+  watch:{
+    // 监听编辑模式，编辑模式下滚动条距底部需要产生48像素的距离
+    isEditMode(isEditMode) {
+      this.scrollBottom = isEditMode?48:0
+      this.$nextTick(() => {
+        this.$refs.scroll.refresh()
+      })
+    }
+  },
   methods:{
     onScroll(offsetY){
       this.setOffsetY(offsetY)
@@ -27,7 +44,7 @@ export default {
     getShelfList(){
       shelf().then(response =>{
         if(response.status===200&&response.data&&response.data.bookList){
-          this.setShelfList(response.data.bookList)
+          this.setShelfList(appendAddToShelf(response.data.bookList))
         }
       })
     }
