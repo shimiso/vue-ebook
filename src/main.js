@@ -9,6 +9,7 @@ import './assets/styles/global.scss'
 import animated from 'animate.css'
 // import './mock'
 import './utils/boost'
+import './utils/create-api'
 
 Vue.use(animated)
 Vue.config.productionTip = false

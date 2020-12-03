@@ -15,10 +15,15 @@ module.exports = {
     outputDir: "dist",
     // 放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录
     assetsDir: "public",
+    lintOnSave: false,
     devServer: {
         port: 8080, // 端口号
         host: '0.0.0.0',
         open: false, //配置自动启动浏览器
+        overlay: {
+            warnings: false,
+            errors: false
+        },
         proxy: {
             '/bookApi': {
                 target: 'http://10.0.10.175:8088',  // target host
