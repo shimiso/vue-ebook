@@ -49,7 +49,7 @@ export const storeShelfMixin = {
                 return this.setShelfList(shelfList)
             }
         },
-        /*moveOutOfGroup(f) {
+        moveOutOfGroup(f) {
             this.setShelfList(this.shelfList.map(book => {
                 if (book.type === 2 && book.itemList) {
                     book.itemList = book.itemList.filter(subBook => !subBook.selected)
@@ -63,7 +63,7 @@ export const storeShelfMixin = {
                     if (f) f()
                 })
             })
-        }*/
+        }
     }
 }
 

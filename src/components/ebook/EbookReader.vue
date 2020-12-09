@@ -24,6 +24,7 @@ import {
   saveTheme,
   getLocation
 } from '../../utils/localStorage'
+import {getLocalForage} from "@/utils/localForage";
 global.ePub = Epub
 export default {
   name: "EbookReader",
@@ -199,8 +200,7 @@ export default {
         this.setDefaultFontFamily(font)
       }
     },
-    initEpub(){
-      const url = '/bookApi/epub/'+this.fileName+'.epub'
+    initEpub(url){
       console.log(url)
       this.book = new Epub(url)
       this.setCurrentBook(this.book);
@@ -267,10 +267,23 @@ export default {
     }
   },
   mounted() {
-    const fileName = this.$route.params.fileName.split('|').join('/')
-    this.setFileName(fileName).then(()=>{
-      this.initEpub();
+    const books = this.$route.params.fileName.split('|')
+    const fileName = books[1]
+    getLocalForage(fileName,(err,blob)=>{
+      if(!err&&blob){
+        console.log('找到离线缓存电子书')
+        this.setFileName(books.join('/')).then(()=>{
+          this.initEpub(blob)
+        })
+      }else{
+        console.log('在线获取电子书')
+        this.setFileName(books.join('/')).then(()=>{
+          const url = '/bookApi/epub/'+this.fileName+'.epub'
+          this.initEpub(url);
+        })
+      }
     })
+
   }
 }
 </script>

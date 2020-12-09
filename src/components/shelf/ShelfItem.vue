@@ -37,6 +37,7 @@ export default {
   methods:{
     onItemClick(){
       if(this.isEditMode){
+        if(this.data.type!==1) return
         this.data.selected = !this.data.selected
         if(this.data.selected){
           this.shelfSelected.pushWithoutDuplicate(this.data)
@@ -46,7 +47,14 @@ export default {
       }else{
         if(this.data.type===1){
           this.showBookDetail(this.data)
-        } else{
+        }else if(this.data.type===2){
+          this.$router.push({
+            path:'/store/category',
+            query:{
+              title:this.data.title
+            }
+          })
+        }else{
           gotoStoreHome()
         }
       }

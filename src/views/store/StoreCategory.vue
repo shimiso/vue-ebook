@@ -1,10 +1,10 @@
 <template>
   <div class="store-shelf">
-      <shelf-title :title="$t('shelf.title')"></shelf-title>
-      <scroll class="store-shelf-scroll-wrapper" :top="0"  @onScroll="onScroll" :bottom="scrollBottom" ref="scroll">
-      <shelf-search></shelf-search>
-      <shelf-list :data="shelfList"></shelf-list>
-    </scroll>
+      <shelf-title :title="shelfCategory.title" :if-show-back="true"></shelf-title>
+      <scroll class="store-shelf-scroll-wrapper" :top="0"  @onScroll="onScroll" :bottom="scrollBottom" ref="scroll" v-if="ifShowList">
+        <shelf-list :top="42" :data="shelfCategory.itemList"></shelf-list>
+      </scroll>
+    <div class="store-shelf-empty-view" v-else>{{$t('shelf.groupNone')}}</div>
     <shelf-footer></shelf-footer>
   </div>
 </template>
@@ -12,7 +12,6 @@
 <script>
 import ShelfTitle from "@/components/shelf/ShelfTitle";
 import Scroll from "@/components/common/Scroll";
-import ShelfSearch from "@/components/shelf/ShelfSearch";
 import { storeShelfMixin } from '../../utils/mixin'
 import ShelfList from "@/components/shelf/ShelfList";
 import ShelfFooter from "@/components/shelf/ShelfFooter";
@@ -20,10 +19,15 @@ import ShelfFooter from "@/components/shelf/ShelfFooter";
 export default {
   name: "StoreShelf",
   mixins: [storeShelfMixin],
-  components:{ShelfFooter, ShelfList, ShelfSearch, Scroll, ShelfTitle},
+  components:{ShelfFooter, ShelfList, Scroll, ShelfTitle},
   data(){
     return{
       scrollBottom:0
+    }
+  },
+  computed:{
+    ifShowList(){
+      return this.shelfCategory.itemList && this.shelfCategory.itemList.length>0
     }
   },
   watch:{
@@ -41,9 +45,8 @@ export default {
     },
   },
   mounted() {
-    this.getShelfList()
-    this.setShelfCategory([])//书架列表设置为空
-    this.setCurrentType(1)//当前为书架列表
+    this.getCategoryList(this.$route.query.title)
+    this.setCurrentType(2)//当前为分类列表
   }
 }
 </script>
@@ -61,6 +64,16 @@ export default {
     top:0;
     left: 0;
     z-index: 101;
+  }
+  .store-shelf-empty-view{
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    color: #666;
+    @include center
   }
 }
 </style>
