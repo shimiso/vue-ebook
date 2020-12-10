@@ -164,10 +164,10 @@ export default {
       })
       this.rendition.hooks.content.register(contents => {
         Promise.all([
-          contents.addStylesheet('/bookApi/fonts/daysOne.css'),
-          contents.addStylesheet('/bookApi/fonts/cabin.css'),
-          contents.addStylesheet('/bookApi/fonts/montserrat.css'),
-          contents.addStylesheet('/bookApi/fonts/tangerine.css')
+          contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/daysOne.css`),
+          contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/cabin.css`),
+          contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/montserrat.css`),
+          contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/tangerine.css`)
         ]).then(() => {
         })
       })
@@ -278,7 +278,7 @@ export default {
       }else{
         console.log('在线获取电子书')
         this.setFileName(books.join('/')).then(()=>{
-          const url = '/bookApi/epub/'+this.fileName+'.epub'
+          const url = process.env.VUE_APP_EPUB_URL + '/' + this.fileName + '.epub'
           this.initEpub(url);
         })
       }

@@ -70,10 +70,10 @@ export function themeList(vue) {
   ]
 }
 export function removeAllCss() {
-  removeCss('/bookApi/theme/theme_default.css')
-  removeCss('/bookApi/theme/theme_eye.css')
-  removeCss('/bookApi/theme/theme_gold.css')
-  removeCss('/bookApi/theme/theme_night.css')
+  removeCss(`${process.env.VUE_APP_RES_URL}/theme/theme_default.css`)
+  removeCss(`${process.env.VUE_APP_RES_URL}/theme/theme_eye.css`)
+  removeCss(`${process.env.VUE_APP_RES_URL}/theme/theme_gold.css`)
+  removeCss(`${process.env.VUE_APP_RES_URL}/theme/theme_night.css`)
 }
 export function removeCss(href) {
   const links = document.getElementsByTagName('link')

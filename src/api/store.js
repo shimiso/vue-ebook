@@ -4,28 +4,28 @@ import { setLocalForage } from '../utils/localForage'
 export function flatList() {
   return axios({
     method: 'get',
-    url: `/book/flat-list`
+    url: `${process.env.VUE_APP_BOOK_URL}/book/flat-list`
   })
 }
 
 export function shelf() {
   return axios({
     method: 'get',
-    url: `/book/shelf`
+    url: `${process.env.VUE_APP_BASE_URL}/book/shelf`
   })
 }
 
 export function home() {
   return axios({
     method: 'get',
-    url: `/book/home`
+    url: `${process.env.VUE_APP_BASE_URL}/book/home`
   })
 }
 
 export function detail(book) {
   return axios({
     method: 'get',
-    url: `/appBaseUrl/book/detail`,
+    url: `${process.env.VUE_APP_BOOK_URL}/book/detail`,
     params: {
       fileName: book.fileName
     }
@@ -35,7 +35,7 @@ export function detail(book) {
 export function list() {
   return axios({
     method: 'get',
-    url: `/book/list`
+    url: `${process.env.VUE_APP_BASE_URL}/book/list`
   })
 }
 
@@ -45,7 +45,7 @@ export function download(book, onSucess, onError, onProgress) {
     onError = null
   }
   return axios.create({
-    baseURL: 'http://47.99.166.157/epub',
+    baseURL: process.env.VUE_APP_EPUB_URL,
     method: 'get',
     responseType: 'blob',
     timeout: 180 * 1000,
@@ -53,12 +53,12 @@ export function download(book, onSucess, onError, onProgress) {
       if (onProgress) onProgress(progressEvent)
     }
   }).get(`${book.categoryText}/${book.fileName}.epub`)
-    .then(res => {
-      const blob = new Blob([res.data])
-      setLocalForage(book.fileName, blob,
-        () => onSucess(book),
-        err => onError(err))
-    }).catch(err => {
-      if (onError) onError(err)
-    })
+      .then(res => {
+        const blob = new Blob([res.data])
+        setLocalForage(book.fileName, blob,
+            () => onSucess(book),
+            err => onError(err))
+      }).catch(err => {
+        if (onError) onError(err)
+      })
 }

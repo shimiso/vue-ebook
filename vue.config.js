@@ -8,14 +8,19 @@ const homeData = require('./src/mock/bookHome')
 const shelfData = require('./src/mock/bookShelf')
 const listData = require('./src/mock/bookList')
 const flatListData = require('./src/mock/bookFlatList')
+const IS_PROD = ["production", "prod"].includes(process.env.NODE_ENV);
 
 module.exports = {
-    publicPath:process.env.NODE_ENV === 'production'?'./':'/',
+    // 默认'/'，部署应用包时的基本 URL
+    publicPath: IS_PROD ? './': "/",
     // 运行 vue-cli-service build 时生成的生产环境构建文件的目录
     outputDir: "dist",
     // 放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录
     assetsDir: "public",
+    // 是否使用eslint
     lintOnSave: false,
+    // 如果不需要生产时的源映射，那么将此设置为false可以加速生产构建
+    productionSourceMap: !IS_PROD, // 生产环境的 source map
     devServer: {
         port: 8080, // 端口号
         host: '0.0.0.0',
@@ -40,25 +45,23 @@ module.exports = {
                 pathRewrite: {
                     '^/appBaseUrl': '/'  // rewrite path
                 }
-            },
-            '/appEpubOpfUrl': {
-                target: 'http://47.99.166.157/epub2',  // target host
-                ws: true,  // proxy websockets
-                changeOrigin: true,  // needed for virtual hosted sites
-                pathRewrite: {
-                    '^/appEpubOpfUrl': '/'  // rewrite path
-                }
-            },
+            }
         },
         before(app) {
-            mock(app, '/book/home', homeData)
-            mock(app, '/book/shelf', shelfData)
-            mock(app, '/book/list', listData)
-            mock(app, '/book/flat-list', flatListData)
+            mock(app, `${process.env.VUE_APP_BASE_URL}/book/home`, homeData)
+            mock(app, `${process.env.VUE_APP_BASE_URL}/book/shelf`, shelfData)
+            mock(app, `${process.env.VUE_APP_BASE_URL}/book/list`, listData)
+            mock(app, `${process.env.VUE_APP_BOOK_URL}/book/flat-list`, flatListData)
         }
     },
-
-
+    // webpack配置
+    configureWebpack:{
+        performance:{
+            hints: 'warning',
+            maxAssetSize: 524288 * 10,
+            maxEntrypointSize: 524288 * 10
+        }
+    },
     css: {
         loaderOptions: {
             postcss: {

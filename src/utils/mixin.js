@@ -153,19 +153,19 @@ export const ebookMixin = {
             removeAllCss()
             switch (this.defaultTheme) {
                 case 'Default':
-                    addCss('/bookApi/theme/theme_default.css')
+                    addCss(`${process.env.VUE_APP_RES_URL}/theme/theme_default.css`)
                     break
                 case 'Eye':
-                    addCss('/bookApi/theme/theme_eye.css')
+                    addCss(`${process.env.VUE_APP_RES_URL}/theme/theme_eye.css`)
                     break
                 case 'Gold':
-                    addCss('/bookApi/theme/theme_gold.css')
+                    addCss(`${process.env.VUE_APP_RES_URL}/theme/theme_gold.css`)
                     break
                 case 'Night':
-                    addCss('/bookApi/theme/theme_night.css')
+                    addCss(`${process.env.VUE_APP_RES_URL}/theme/theme_night.css`)
                     break
                 default:
-                    addCss('/bookApi/theme/theme_default.css')
+                    addCss(`${process.env.VUE_APP_RES_URL}/theme/theme_default.css`)
                     break
             }
         },

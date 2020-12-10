@@ -502,7 +502,7 @@
         // }
         const xmlhttp = new XMLHttpRequest()
         // 创建HTTP请求，同步接收结果
-        xmlhttp.open('GET', `http://47.99.166.157:3000/voice?text=${text}&lang=${this.lang.toLowerCase()}`, false)
+        xmlhttp.open('GET', `${process.env.VUE_APP_VOICE_URL}/voice?text=${text}&lang=${this.lang.toLowerCase()}`, false)
         // 发送请求
         xmlhttp.send()
         // 获取响应内容

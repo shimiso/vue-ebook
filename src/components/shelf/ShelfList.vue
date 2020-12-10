@@ -43,10 +43,11 @@ export default {
 <style lang="scss" rel="stylesheet/scss" scoped>
 @import "../../assets/styles/global";
 .shelf-list{
-  font-size: 14px;
   position: absolute;
+  font-size: 14px;
   left: 0;
   z-index: 104;
+  width: 100%;
   #shelf-list {
     display: flex;
     flex-flow: row wrap;//flex-flow 属性是 flex-direction、flex-wrap的复合属性。flex-direction 属性规定灵活项目的方向。flex-wrap 属性规定灵活项目是否拆行或拆列。

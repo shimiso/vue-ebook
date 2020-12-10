@@ -304,7 +304,7 @@
                 rootFile = rootFile.substring(1, rootFile.length)
               }
               // 根据rootFile拼接出opf文件路径
-              this.opf = `/appEpubOpfUrl/${this.fileName}/${rootFile}`
+              this.opf = `${process.env.VUE_APP_EPUB_OPF_URL}/${this.fileName}/${rootFile}`
               // 解析电子书
               this.parseBook(this.opf)
             } else {
