@@ -16,22 +16,63 @@
       </div>
     </div>
     <div class="bottom-btn-wrapper">
-      <span class="bottom-btn-text">{{$t('detail.addOrRemoveShelf')}}</span>
+      <div class="bottom-btn-text" @click.stop.prevent="addOrRemoveShelf()">
+        <span class="icon-check" v-if="inBookShelf"></span>
+        {{inBookShelf ? $t('detail.isAddedToShelf') : $t('detail.addOrRemoveShelf')}}
+      </div>
     </div>
+
+
   </div>
 </template>
 
 <script>
-  export default {
+import {addToShelf, removeFromBookShelf} from "@/utils/store";
+import {getBookShelf, saveBookShelf} from "@/utils/localStorage";
+import {storeShelfMixin} from "@/utils/mixin";
+
+export default {
+  mixins: [storeShelfMixin],
     props: {
       chapter: Object,
       currentSectionIndex: Number,
       currentSectionTotal: Number,
       showPlay: Boolean,
       isPlaying: Boolean,
-      playInfo: Object
+      playInfo: Object,
+      bookItem:Object
+    },
+    computed:{
+      // 判断当前的电子书是否存在于书架
+      inBookShelf() {
+        if (this.bookItem && this.shelfList) {
+          // 定义一个自执行函数，将书架转为一维数组结构，并且只保留type为1的数据（type=1的为电子书）
+          const flatShelf = (function flatten(arr) {
+            return [].concat(...arr.map(v => v.itemList ? [v, ...flatten(v.itemList)] : v))
+          })(this.shelfList).filter(item => item.type === 1)
+          // 查找当前电子书是否存在于书架
+          const book = flatShelf.filter(item => item.fileName === this.bookItem.fileName)
+          return book && book.length > 0
+        } else {
+          return false
+        }
+      }
     },
     methods: {
+      addOrRemoveShelf() {
+        // 如果电子书存在于书架，则从书架中移除电子书
+        if (this.inBookShelf) {
+          this.setShelfList(removeFromBookShelf(this.bookItem))
+              .then(() => {
+                // 将书架数据保存到LocalStorage
+                saveBookShelf(this.shelfList)
+              })
+        } else {
+          // 如果电子书不存在于书架，则添加电子书到书架
+          addToShelf(this.bookItem)
+          this.setShelfList(getBookShelf())
+        }
+      },
       togglePlay() {
         this.$parent.togglePlay()
       },
@@ -110,6 +151,9 @@
         font-size: px2rem(14);
         color: $color-blue;
         font-weight: bold;
+        .icon-check {
+          margin-right: px2rem(5);
+        }
       }
     }
   }
